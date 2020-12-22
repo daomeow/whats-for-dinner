@@ -4,18 +4,23 @@
 /**
  * How could your rewrite this without global variables?
  */
-var side = document.querySelector('#side');
-var main = document.querySelector('#main-dish');
-var dessert = document.querySelector('#dessert');
-var meal = document.querySelector('#entire-meal');
-var cookButton = document.querySelector('.button2');
-var radios = document.getElementsByName('dish');
+//! The first four aren't used in your code and can be removed
+// var side = document.querySelector('#side');
+// var main = document.querySelector('#main-dish');
+// var dessert = document.querySelector('#dessert');
+// var meal = document.querySelector('#entire-meal');
+
+//! Moved to the event listener
+// var cookButton = document.querySelector('.button2');
+
+//! Not needed because of new `userInput` variable
+// var radios = document.getElementsByName('dish');
 
 //////////////////////////////////////
 // Event Listener
 //////////////////////////////////////
 //! Very happy you're not a lazy dev and are spelling out "event" 🙂
-cookButton.addEventListener('click', function(event) {
+document.querySelector('.button2').addEventListener('click', function(event) {
 
   event.preventDefault();
   getRandomDish();
@@ -30,46 +35,50 @@ function getRandomNumber(array) {
   return Math.floor(Math.random() * array.length);
 }
 
+//! New "helper" functions based on user input
+function getEntireMeal() {
+  var randomMain = food.main[(getRandomNumber(food.main))];
+  var randomSide = food.side[(getRandomNumber(food.side))];
+  var randomDessert = food.dessert[(getRandomNumber(food.dessert))];  
+  var entireMeal = `${randomMain} with a side of ${randomSide} and ${randomDessert} for dessert!`;
+
+  document.querySelector('h2').innerHTML = entireMeal;  
+}
+
+function getSelectedDish(userInput) {
+  var randomNum = getRandomNumber(food[userInput]);
+  var randomDish = food[userInput][randomNum];
+  var dishString = `${randomDish}!`;
+
+  document.querySelector('h2').innerHTML = dishString;
+}
+
 // Return radio button input and access the appropriate array 
 function getRandomDish() {
   /**
    * Can you move these somewhere else so they're only scoped to where they're used?
    */
-  var randomDish;
-  var randomNum;
-  var userInput;
-  var dishString = '';
-  var randomMain = '';
-  var randomSide = '';
-  var randomDessert = '';
-  var entireMeal;
+  //! Poof!
 
   /**
    * How else could you get this element without looping through all of the radio inputs?
    */
-  // Loop through radio buttons to return user selected radio ID
-  for (var i = 0; i < radios.length; i++) {  
-    if (radios[i].checked) {
-      userInput = radios[i].id;
-    }  
-  }
+  //! Loop through radio buttons to return user selected radio ID
+  //! Grab an input => with "name" attribute of "dish" => only with psuedo-class "checked"
+  //! https://developer.mozilla.org/en-US/docs/Web/CSS/:checked
+  var userInput = document.querySelector('input[name="dish"]:checked').id;
 
   /**
    * Refactor the "if" block to it's own function and the "else" block to it's own function
    */
   // Display dish or entire meal based on user input 
+  //! Extra challenge: How could we update this to use a ternary instead of an "if/else"
+  //! HINT: Make each "helper" return the "string" value to a variable called "suggestion"
+  //! Solution is on branch: hugh-super-refactor
   if (userInput === 'entire-meal') {
-    randomMain = food.main[(getRandomNumber(food.main))];
-    randomSide = food.side[(getRandomNumber(food.side))];
-    randomDessert = food.dessert[(getRandomNumber(food.dessert))];  
-    
-    entireMeal = `${randomMain} with a side of ${randomSide} and ${randomDessert} for dessert!`;
-    document.querySelector('h2').innerHTML = entireMeal;  
+    getEntireMeal();
   } else {
-    randomNum = getRandomNumber(food[userInput]);
-    randomDish = food[userInput][randomNum];
-    dishString = `${randomDish}!`;
-    document.querySelector('h2').innerHTML = dishString;
+    getSelectedDish(userInput);
   }
   
   // Hide cook-pot picture and display suggestion message 
