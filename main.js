@@ -1,6 +1,9 @@
 //////////////////////////////////////
 // Global variables
 //////////////////////////////////////  
+/**
+ * How could your rewrite this without global variables?
+ */
 var side = document.querySelector('#side');
 var main = document.querySelector('#main-dish');
 var dessert = document.querySelector('#dessert');
@@ -11,7 +14,9 @@ var radios = document.getElementsByName('dish');
 //////////////////////////////////////
 // Event Listener
 //////////////////////////////////////
+//! Very happy you're not a lazy dev and are spelling out "event" 🙂
 cookButton.addEventListener('click', function(event) {
+
   event.preventDefault();
   getRandomDish();
 })
@@ -19,7 +24,7 @@ cookButton.addEventListener('click', function(event) {
 //////////////////////////////////////
 // Functions
 //////////////////////////////////////
-
+//! These types of comments are awesome! Smart use of a "helper" function as well!
 // Retrieve random number from array 
 function getRandomNumber(array) {
   return Math.floor(Math.random() * array.length);
@@ -27,6 +32,9 @@ function getRandomNumber(array) {
 
 // Return radio button input and access the appropriate array 
 function getRandomDish() {
+  /**
+   * Can you move these somewhere else so they're only scoped to where they're used?
+   */
   var randomDish;
   var randomNum;
   var userInput;
@@ -36,6 +44,9 @@ function getRandomDish() {
   var randomDessert = '';
   var entireMeal;
 
+  /**
+   * How else could you get this element without looping through all of the radio inputs?
+   */
   // Loop through radio buttons to return user selected radio ID
   for (var i = 0; i < radios.length; i++) {  
     if (radios[i].checked) {
@@ -43,6 +54,9 @@ function getRandomDish() {
     }  
   }
 
+  /**
+   * Refactor the "if" block to it's own function and the "else" block to it's own function
+   */
   // Display dish or entire meal based on user input 
   if (userInput === 'entire-meal') {
     randomMain = food.main[(getRandomNumber(food.main))];
